@@ -24,19 +24,24 @@ void Mostrartarea(tarea aux);
 void Mostrartareas(tarea** aux, int cant);
 tarea** Cargartareas(int cant);
 void encontrarTareasporID(tarea** aux, int id, int cant);
+void encontrarTareasporPalabraClave(tarea** aux, char palabraClave[TAMA], int cant);
 
 int main(){
     tarea** tareasPendientes;
     int cant;
     int id;
     int realizo;
+    char palabra[TAMA];
     printf("Ingrese la cantidad de empleados\n");
     scanf("%d",&cant);
     tareasPendientes=CargarPuntero(cant);
     tarea** tareasrealizadas=InicializarNulo(cant);
-    printf("Ingrese el id que desea buscar\n");
-    scanf("%d",&id);
-    encontrarTareasporID(tareasPendientes,id,cant);
+    //printf("Ingrese el id que desea buscar\n");
+    //scanf("%d",&id);
+    //encontrarTareasporID(tareasPendientes,id,cant);
+    printf("Ingrese la palabra que desea encontrar\n");
+    gets(palabra);
+    encontrarTareasporPalabraClave(tareasPendientes,palabra,cant);
     for(int i=0;i<cant;i++){
         printf("Realizo la tarea %d?\n",i);
         scanf("%d",&realizo);
@@ -70,6 +75,7 @@ tarea** CargarPuntero(int cant){
     for(int i=0;i<cant;i++){
         aux[i]=(tarea*)malloc(sizeof(tarea));
         *aux[i]=CargarTarea();
+        aux[i]->TareaID=i;
     }
     return(aux);
 }
@@ -108,3 +114,11 @@ void encontrarTareasporID(tarea** aux, int id, int cant){
     }
 }
 
+void encontrarTareasporPalabraClave(tarea** aux, char palabraClave[TAMA], int cant){
+   printf("-------RESULTADOS DE LA BUSQUEDA-----\n");
+    for(int i=0;i<cant;i++){
+        if(strstr(aux[i]->Descripcion,palabraClave)){
+            Mostrartarea(*aux[i]);
+        }
+    }
+}
