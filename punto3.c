@@ -29,27 +29,80 @@ void borrarprimero(lista *aux); // sin liberar la memoria
 lista realizaTareas(lista *tareaspendientes, lista* tareasrealizadas);
 void InsertarNodoALista(lista* pendientes, lista nodo);
 lista DesenlazarNodo(lista* pendientes);
+tarea BuscarNodo(lista tareaspendientes, lista tareasrealiazadas, int i);
 
 int main()
 {
     lista tareasPendientesFinal=CrearLista();
     lista tareaspendientes;
     lista tareasrealizadas;
+     int menu;
+     int cant;
+     int numtarea;
+     tarea buscar;
     tareaspendientes = CrearLista();
     tareasrealizadas=CrearLista();
+    while(menu!=0){
+        printf("-------MENU--------\n");
+        printf("1. INGRESAR\n");
+        printf("2. Mostrar tareas ingresadas\n");
+        printf("3. Indicar tareas pendientes y realizadas\n");
+        printf("4. Mostrar tareas pendientes\n");
+        printf("5. Mostrar tareas realizadas");
 
-    int cant;
-    printf("Ingrese la cantidad de elementos que desea ingresar\n");
-    scanf("%d", &cant);
-    for (int i = 0; i < cant; i++)
-    {
-        InsertarPrimero(&tareaspendientes, i);
+        
+
+        scanf("%d",&menu);
+        switch (menu)
+        {
+        case 1:
+            printf("    INGRESAR    \n");
+            printf("Ingrese la cantidad de elementos que desea ingresar\n");
+        scanf("%d", &cant);
+        for (int i = 0; i < cant; i++)
+        {
+            InsertarPrimero(&tareaspendientes, i);
+        }
+            break;
+        case 2: 
+        {
+            printf("Mostrar tareas ingresadas\n");
+            Mostrar(tareaspendientes);
+        }
+            break;
+        case 3:
+        {
+            printf("INDICAR TAREAS PENDIENTES Y REALIZADAS\n");
+            tareasPendientesFinal=realizaTareas(&tareaspendientes, &tareasrealizadas);
+        }
+            break;
+        case 4:
+        {
+            printf("MOSTRAR TAREAS PENDIENTES\n");
+            printf("---------TAREAS PENDIENTES--------\n");
+            Mostrar(tareasPendientesFinal);
+        }
+            break;
+        case 5:
+        {
+            printf("MOSTRAR TAREAS REALIZADAS\n");
+            printf("--------TAREAS REALIZADAS-------\n");
+            Mostrar(tareasrealizadas);
+        }
+            break;
+        case 6: 
+        {
+            printf("BUSCAR TAREAS\n");
+            printf("Ingrese la tarea que desea buscar\n");
+            scanf("%d",&numtarea);
+            buscar=BuscarNodo(tareasPendientesFinal,tareasrealizadas, numtarea);
+            printf("-------TAREA ENCONTRADA---------\n");
+            Mostrartarea(buscar);
+        }
+        break;
+        }
     }
-    tareasPendientesFinal=realizaTareas(&tareaspendientes, &tareasrealizadas);
-    printf("---------TAREAS PENDIENTES--------\n");
-    Mostrar(tareasPendientesFinal);
-    printf("--------TAREAS REALIZADAS-------\n");
-    Mostrar(tareasrealizadas);
+
     free(tareasPendientesFinal);
     free(tareasrealizadas);
     return 0;
@@ -156,4 +209,27 @@ lista DesenlazarNodo(lista* pendientes){
 void InsertarNodoALista(lista* pendientes, lista nodo){
     nodo->siguiente=*pendientes;
     *pendientes=nodo;
+}
+
+tarea BuscarNodo(lista tareaspendientes, lista tareasrealiazadas, int i){
+    int bandera=0;
+    while(!esvacia(tareaspendientes)||bandera==1)
+    {
+        if(tareaspendientes->dato.TareaID==i){
+            bandera=1;
+            return(tareaspendientes->dato);
+        }
+        tareaspendientes=tareaspendientes->siguiente;
+    }
+    if(bandera==0){
+        while(!esvacia(tareasrealiazadas)||bandera==1){
+            if(tareasrealiazadas->dato.TareaID==i){
+                bandera==1;
+                return(tareasrealiazadas->dato);
+            }
+        }
+    }
+    printf("No se encontró el elemento\n");
+
+    
 }
